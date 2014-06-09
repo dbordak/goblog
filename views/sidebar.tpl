@@ -6,7 +6,7 @@
   <select name="sidebar_category" onchange="toCategoryPage()" id="side_dd">
     <option value="">---</option>
     {{range .Categories}}
-    <option value={{.}}>{{.}}</option>
+    <option value={{.}}>{{.Name}}</option>
     {{end}}
   </select>
   <hr class="section" id="navsep_b"/>

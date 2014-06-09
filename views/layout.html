@@ -6,6 +6,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+  <title>goblog</title>
   <meta name="description" content=""/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -15,7 +16,7 @@
   <link rel="stylesheet" href="/css/normalize.css"/>
   <link rel="stylesheet" href="/css/main.css"/>
   <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
-  {{template "head.tpl" .HtmlHead}}
+  {{.HtmlHead}}
 </head>
 <body>
   <!--[if lt IE 7]>
@@ -27,7 +28,7 @@
       <img src="/img/lime.png" alt="Header Image" width="240px"/>
       <h1>Blargh 2</h1>
     </a>
-    <p>This is a blog.</p>
+    <p>Electric Boogaloo.</p>
     <hr class="section" id="title_nav_sep"/>
     {{template "sidebar.tpl" .Sidebar}}
   </aside>

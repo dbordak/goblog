@@ -1,0 +1,8 @@
+<h1>Administration</h1>
+
+<ul>
+<li><a href="/admin/add/ent">Add Entry</a></li>
+<li><a href="/admin/del/ent">Delete Entry</a></li>
+<li><a href="/admin/add/cat">Add Category</a></li>
+<li><a href="/admin/del/cat">Delete Category</a></li>
+</ul>

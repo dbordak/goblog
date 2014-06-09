@@ -1,6 +1,6 @@
 {{range .Entries}}
 <article>
-  <h2><a href={{.}}>{{.}}</a></h2>
-  <p>{{. | html2str}}</p>
+  <h2><a href={{.Url}}>{{.Title}}</a></h2>
+  <p>{{.Content | html2str}}</p>
 </article>
 {{end}}
