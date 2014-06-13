@@ -8,7 +8,7 @@ import (
 )
 
 type Sidebar struct {
-	Categories []models.Category
+	Categories map[int64]string
 	IsAdmin    bool
 }
 
@@ -21,17 +21,26 @@ type BlogController struct {
 	beegae.Controller
 }
 
+//TODO: Add check for IsAdmin
 func (this *BlogController) Prepare() {
-	q := datastore.NewQuery("Category").Order("Name")
-	var cats []models.Category
-	_, err := q.GetAll(this.AppEngineCtx, &cats)
-	if err != nil {
-		this.AppEngineCtx.Errorf("fetching categories: %v", err)
-		return
+	q := datastore.NewQuery("Category").Order("n")
+	t := q.Run(this.AppEngineCtx)
+	m := make(map[int64]string)
+	for {
+		var cat models.Category
+		key, err := t.Next(&cat)
+		if err == datastore.Done {
+			break
+		}
+		if err != nil {
+			this.AppEngineCtx.Errorf("fetching next Category: %v", err)
+			break
+		}
+		m[key.IntID()] = cat.Name
 	}
 
 	//Sets Category dropdown and "Admin Page" button
-	this.Data["Sidebar"] = &Sidebar{cats, true}
+	this.Data["Sidebar"] = &Sidebar{m, true}
 	//Sets Newer and Older buttons
 	//this.Data["Footer"] = &Footer{"", ""}
 

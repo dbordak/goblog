@@ -16,6 +16,17 @@ type Entry struct {
 	Category *datastore.Key `datastore:"cat"`
 	Content  string         `datastore:"c,noindex"`
 	Date     time.Time      `datastore:"d"`
-	Url      string         `datastore:"-"`
-	Name     string         `datastore:"-"`
+}
+
+func NewEntry(title string, cat *datastore.Key, content string) *Entry {
+	return &Entry{
+		Title:    title,
+		Category: cat,
+		Content:  content,
+		Date:     time.Now(),
+	}
+}
+
+func (this *Entry) Url() {
+	return
 }

@@ -1,6 +1,7 @@
 <h1>{{.Title}}</h1>
+<p>{{.Desc}}</p>
+{{with .Form}}
 <form action="" method="post">
-  {{with .Form}}
   <dl>
     {{with .Name}}
     <dt><label for="f_title">{{.}}</label></dt>
@@ -13,15 +14,17 @@
         {{if .DefOpt}}
         <option value="None">---</option>
         {{end}}
-        {{.Items}}
+        {{range $id, $name := .Items}}
+        <option value={{$id}}>{{$name}}</option>
+        {{end}}
       </select>
     </dd>
     {{end}}
-    {{with .Textarea}}
-    <dt><label for="f_textarea">{{.}}</label></dt>
-    <dd><textarea rows="8" cols="40" id="f_textarea" name="ta"></textarea></dd>
-    {{end}}
   </dl>
+  {{with .Textarea}}
+  <label for="f_textarea">{{.}}</label><br/>
+  <textarea rows="8" cols="40" id="f_textarea" name="ta"></textarea>
   {{end}}
   <div class="actions"><input type="submit" value="Submit"></div>
 </form>
+{{end}}

@@ -5,8 +5,8 @@
   <label for="sidebar_category">Category: </label><br/>
   <select name="sidebar_category" onchange="toCategoryPage()" id="side_dd">
     <option value="">---</option>
-    {{range .Categories}}
-    <option value={{.}}>{{.Name}}</option>
+    {{range $id, $name := .Categories}}
+    <option value={{$id}}>{{$name}}</option>
     {{end}}
   </select>
   <hr class="section" id="navsep_b"/>
