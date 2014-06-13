@@ -78,7 +78,7 @@ func NewSimpleController(template string) *SimpleController {
 
 func (this *SimpleController) Get() {
 	this.Data["Footer"] = &Footer{this.TplNames, "dwadaw"}
-	//this.TplNames = "about.tpl"
+	this.TplNames = "about.tpl"
 }
 
 func (this *SimpleController) About() {
