@@ -7,11 +7,6 @@ import (
 	"models"
 )
 
-type HtmlHead struct {
-	Title string
-	Head  string
-}
-
 type Sidebar struct {
 	Categories []models.Category
 	IsAdmin    bool
@@ -22,12 +17,10 @@ type Footer struct {
 	NextButton string
 }
 
-//Master struct for all pages; fills in sidebar and basic info
 type BlogController struct {
 	beegae.Controller
 }
 
-//TODO: Add admin check
 func (this *BlogController) Prepare() {
 	q := datastore.NewQuery("Category").Order("Name")
 	var cats []models.Category
@@ -41,8 +34,6 @@ func (this *BlogController) Prepare() {
 	this.Data["Sidebar"] = &Sidebar{cats, true}
 	//Sets Newer and Older buttons
 	//this.Data["Footer"] = &Footer{"", ""}
-	//Sets page title and adds additional scripts
-	//this.Data["HtmlHead"] = &HtmlHead{"", ""}
 
 	this.Layout = "layout.html"
 }
@@ -69,22 +60,19 @@ type SimpleController struct {
 	BlogController
 }
 
-func NewSimpleController(template string) *SimpleController {
-	sc := &SimpleController{}
-	sc.TplNames = "about.tpl"
-	//sc.Get = renderSimpleTemplate
-	return sc
+func (this *SimpleController) Prepare() {
+	this.BlogController.Prepare()
+	this.TplNames = "simple.tpl"
 }
 
-func (this *SimpleController) Get() {
-	this.Data["Footer"] = &Footer{this.TplNames, "dwadaw"}
+func (this *BlogController) About() {
 	this.TplNames = "about.tpl"
 }
 
-func (this *SimpleController) About() {
-	this.TplNames = "about.tpl"
+func (this *BlogController) AdminNav() {
+	this.TplNames = "admin.tpl"
 }
 
-type FormController struct {
-	BlogController
+func (this *BlogController) EntryPage() {
+	this.TplNames = "simple.tpl"
 }

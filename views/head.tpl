@@ -1,8 +1,2 @@
-<title>
-{{with .Title}}
-{{.}}
-{{else}}
-goblog
-{{end}}
-</title>
+<title>{{.Title}}</title>
 {{.Head}}
