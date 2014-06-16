@@ -10,20 +10,8 @@ type AddController struct {
 	FormController
 }
 
-type addForm struct {
-	Name     string
-	Select   *selectList
-	Textarea string
-}
-
-type addFormRequest struct {
-	Name     string
-	Select   *datastore.Key
-	Textarea string
-}
-
-func (this *AddController) getAddForm() *addFormRequest {
-	fReq := &addFormRequest{
+func (this *AddController) getForm() *formRequest {
+	fReq := &formRequest{
 		Name:     this.GetString("name"),
 		Textarea: this.GetString("ta"),
 	}
@@ -36,20 +24,18 @@ func (this *AddController) getAddForm() *addFormRequest {
 
 func (this *AddController) AddCat() {
 	this.Data["Title"] = "Add Category"
-	sl := &selectList{
-		Name:   "Parent",
-		DefOpt: true,
-		Items:  this.Data["Sidebar"].(*Sidebar).Categories,
-	}
-
-	this.Data["Form"] = &addForm{
-		Name:   "Name",
-		Select: sl,
+	this.Data["Form"] = &form{
+		Name: "Name",
+		Select: &selectList{
+			Name:   "Parent",
+			DefOpt: true,
+			Items:  this.Data["Sidebar"].(*Sidebar).Categories,
+		},
 	}
 }
 
 func (this *AddController) PostCat() {
-	fReq := this.getAddForm("Category")
+	fReq := this.getForm()
 	cat := &models.Category{fReq.Name, fReq.Select}
 
 	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Category", nil)
@@ -62,16 +48,14 @@ func (this *AddController) PostCat() {
 
 func (this *AddController) AddEnt() {
 	this.Data["Title"] = "Add Entry"
-	sl := &selectList{
-		Name:   "Category",
-		DefOpt: true,
-		Items:  this.Data["Sidebar"].(*Sidebar).Categories,
-	}
-
-	this.Data["Form"] = &addForm{
+	this.Data["Form"] = &form{
 		Name:     "Title",
-		Select:   sl,
 		Textarea: "Content",
+		Select: &selectList{
+			Name:   "Category",
+			DefOpt: true,
+			Items:  this.Data["Sidebar"].(*Sidebar).Categories,
+		},
 	}
 
 	//This sets the page to use TinyMCE for Textareas
@@ -80,7 +64,7 @@ func (this *AddController) AddEnt() {
 }
 
 func (this *AddController) PostEnt() {
-	fReq := this.getAddForm("Category")
+	fReq := this.getForm()
 	ent := models.NewEntry(fReq.Name, fReq.Select, fReq.Textarea)
 
 	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Entry", nil)
