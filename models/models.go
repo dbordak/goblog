@@ -7,23 +7,20 @@ import (
 )
 
 type Category struct {
-	Name   string         `datastore:"n"`
-	Parent *datastore.Key `datastore:"p"`
+	Name string `datastore:"n"`
 }
 
 type Entry struct {
-	Title    string         `datastore:"t,noindex"`
-	Category *datastore.Key `datastore:"cat"`
-	Content  string         `datastore:"c,noindex"`
-	Date     time.Time      `datastore:"d"`
+	Title   string    `datastore:"t,noindex"`
+	Content string    `datastore:"c,noindex"`
+	Date    time.Time `datastore:"d"`
 }
 
-func NewEntry(title string, cat *datastore.Key, content string) *Entry {
+func NewEntry(title string, content string) *Entry {
 	return &Entry{
-		Title:    title,
-		Category: cat,
-		Content:  content,
-		Date:     time.Now(),
+		Title:   title,
+		Content: content,
+		Date:    time.Now(),
 	}
 }
 

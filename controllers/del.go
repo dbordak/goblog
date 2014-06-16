@@ -11,10 +11,12 @@ type DelController struct {
 }
 
 func (this *DelController) getForm(selectType string) *formRequest {
-	sel, _ := this.GetInt("sel")
-	return &formRequest{
-		Select: datastore.NewKey(this.AppEngineCtx, selectType, "", sel, nil),
+	selkey, err := datastore.DecodeKey(this.GetString("sel"))
+	if err != nil {
+		//TODO: Error
+		return &formRequest{}
 	}
+	return &formRequest{SelectKey: selkey}
 }
 
 func (this *DelController) GetDelCat() {
@@ -29,13 +31,13 @@ func (this *DelController) GetDelCat() {
 
 func (this *DelController) PostDelCat() {
 	fReq := this.getForm("Category")
-	datastore.Delete(this.AppEngineCtx, fReq.Select)
+	datastore.Delete(this.AppEngineCtx, fReq.SelectKey)
 }
 
 func (this *DelController) GetDelEnt() {
 	q := datastore.NewQuery("Entry").Project("c", "d").Order("d")
 	t := q.Run(this.AppEngineCtx)
-	m := make(map[int64]string)
+	m := make(map[string]string)
 	for {
 		var ent models.Entry
 		key, err := t.Next(&ent)
@@ -46,7 +48,7 @@ func (this *DelController) GetDelEnt() {
 			this.AppEngineCtx.Errorf("fetching next Entry: %v", err)
 			break
 		}
-		m[key.IntID()] = ent.Title
+		m[key.Encode()] = ent.Title
 	}
 
 	this.Data["Title"] = "Remove Entry"
@@ -60,5 +62,5 @@ func (this *DelController) GetDelEnt() {
 
 func (this *DelController) PostDelEnt() {
 	fReq := this.getForm("Entry")
-	datastore.Delete(this.AppEngineCtx, fReq.Select)
+	datastore.Delete(this.AppEngineCtx, fReq.SelectKey)
 }

@@ -16,7 +16,7 @@ func (this *FormController) Prepare() {
 type selectList struct {
 	Name   string
 	DefOpt bool
-	Items  map[int64]string
+	Items  map[string]string
 }
 
 type form struct {
@@ -26,7 +26,7 @@ type form struct {
 }
 
 type formRequest struct {
-	Name     string
-	Select   *datastore.Key
-	Textarea string
+	Name      string
+	SelectKey *datastore.Key
+	Textarea  string
 }

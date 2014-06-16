@@ -11,15 +11,12 @@ type AddController struct {
 }
 
 func (this *AddController) getForm() *formRequest {
-	fReq := &formRequest{
-		Name:     this.GetString("name"),
-		Textarea: this.GetString("ta"),
+	selkey, _ := datastore.DecodeKey(this.GetString("sel"))
+	return &formRequest{
+		Name:      this.GetString("name"),
+		Textarea:  this.GetString("ta"),
+		SelectKey: selkey,
 	}
-	sel, _ := this.GetInt("sel")
-	if sel != 0 {
-		fReq.Select = datastore.NewKey(this.AppEngineCtx, "Category", "", sel, nil)
-	}
-	return fReq
 }
 
 func (this *AddController) AddCat() {
@@ -36,9 +33,9 @@ func (this *AddController) AddCat() {
 
 func (this *AddController) PostCat() {
 	fReq := this.getForm()
-	cat := &models.Category{fReq.Name, fReq.Select}
+	cat := &models.Category{fReq.Name}
 
-	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Category", nil)
+	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Category", fReq.SelectKey)
 	_, err := datastore.Put(this.AppEngineCtx, key, cat)
 	if err != nil {
 		//TODO: Error
@@ -65,9 +62,9 @@ func (this *AddController) AddEnt() {
 
 func (this *AddController) PostEnt() {
 	fReq := this.getForm()
-	ent := models.NewEntry(fReq.Name, fReq.Select, fReq.Textarea)
+	ent := models.NewEntry(fReq.Name, fReq.Textarea)
 
-	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Entry", nil)
+	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Entry", fReq.SelectKey)
 	_, err := datastore.Put(this.AppEngineCtx, key, ent)
 	if err != nil {
 		//TODO: Error

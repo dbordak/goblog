@@ -8,7 +8,7 @@ import (
 )
 
 type Sidebar struct {
-	Categories map[int64]string
+	Categories map[string]string
 	IsAdmin    bool
 }
 
@@ -25,7 +25,7 @@ type BlogController struct {
 func (this *BlogController) Prepare() {
 	q := datastore.NewQuery("Category").Order("n")
 	t := q.Run(this.AppEngineCtx)
-	m := make(map[int64]string)
+	m := make(map[string]string)
 	for {
 		var cat models.Category
 		key, err := t.Next(&cat)
@@ -36,7 +36,7 @@ func (this *BlogController) Prepare() {
 			this.AppEngineCtx.Errorf("fetching next Category: %v", err)
 			break
 		}
-		m[key.IntID()] = cat.Name
+		m[key.Encode()] = cat.Name
 	}
 
 	//Sets Category dropdown and "Admin Page" button
