@@ -54,7 +54,12 @@ type ListController struct {
 
 func (this *ListController) Get() {
 	this.TplNames = "index.tpl"
+	catsafe := this.Ctx.Input.Param(":catsafe")
 	q := datastore.NewQuery("Entry").Order("d").Limit(10)
+	if catsafe != "" {
+		akey, _ := datastore.DecodeKey(catsafe)
+		q = datastore.NewQuery("Entry").Ancestor(akey).Order("d").Limit(10)
+	}
 	t := q.Run(this.AppEngineCtx)
 	m := make(map[string]string)
 	for {

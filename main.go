@@ -11,7 +11,7 @@ func init() {
 	beegae.Router("/about", &controllers.BlogController{}, "get:About")
 	beegae.Router("/:year:int/:month:int/:title/:entid:int",
 		&controllers.BlogController{}, "get:EntryPage")
-	beegae.Router("/cat/:catsafe", &controllers.ListController{})
+	beegae.Router("/:catsafe", &controllers.ListController{})
 
 	adminNamespace := beegae.NewNamespace("/admin").
 		Router("/", &controllers.BlogController{}, "get:AdminNav")
