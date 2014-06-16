@@ -16,8 +16,8 @@ func init() {
 	adminNamespace := beegae.NewNamespace("/admin").
 		Router("/", &controllers.BlogController{}, "get:AdminNav")
 	adminNamespace.Namespace(beegae.NewNamespace("/add").
-		Router("/ent", &controllers.FormController{}, "get:AddEnt;post:PostEnt").
-		Router("/cat", &controllers.FormController{}, "get:AddCat;post:PostCat"))
+		Router("/ent", &controllers.AddController{}, "get:AddEnt;post:PostEnt").
+		Router("/cat", &controllers.AddController{}, "get:AddCat;post:PostCat"))
 	adminNamespace.Namespace(beegae.NewNamespace("/del").
 		Router("/ent", &controllers.FormController{}).
 		Router("/cat", &controllers.FormController{}))

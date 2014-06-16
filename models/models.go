@@ -30,3 +30,7 @@ func NewEntry(title string, cat *datastore.Key, content string) *Entry {
 func (this *Entry) Url() {
 	return
 }
+
+func (this *Entry) DateQuery() *datastore.Query {
+	return datastore.NewQuery("Entry").Order("d")
+}

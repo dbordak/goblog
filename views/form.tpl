@@ -12,7 +12,7 @@
     <dd>
       <select id="f_select" value="" name="sel">
         {{if .DefOpt}}
-        <option value="None">---</option>
+        <option value="0">---</option>
         {{end}}
         {{range $id, $name := .Items}}
         <option value={{$id}}>{{$name}}</option>

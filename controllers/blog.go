@@ -54,15 +54,22 @@ type ListController struct {
 
 func (this *ListController) Get() {
 	this.TplNames = "index.tpl"
-	q := datastore.NewQuery("Entry").Order("Date")
-	var ents []models.Entry
-	_, err := q.GetAll(this.AppEngineCtx, &ents)
-	if err != nil {
-		this.AppEngineCtx.Errorf("fetching entries: %v", err)
-		return
+	q := datastore.NewQuery("Entry").Order("d").Limit(10)
+	t := q.Run(this.AppEngineCtx)
+	m := make(map[string]string)
+	for {
+		var ent models.Entry
+		_, err := t.Next(&ent)
+		if err == datastore.Done {
+			break
+		}
+		if err != nil {
+			this.AppEngineCtx.Errorf("fetching next Entry: %v", err)
+			break
+		}
+		m[ent.Title] = ent.Content
 	}
-
-	this.Data["Entries"] = ents
+	this.Data["Entries"] = m
 }
 
 type SimpleController struct {
