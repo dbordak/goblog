@@ -33,7 +33,7 @@ func (this *DelController) PostDelCat() {
 }
 
 func (this *DelController) GetDelEnt() {
-	q := datastore.NewQuery("Entry").Order("d")
+	q := datastore.NewQuery("Entry").Project("c", "d").Order("d")
 	t := q.Run(this.AppEngineCtx)
 	m := make(map[int64]string)
 	for {
