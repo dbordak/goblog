@@ -9,7 +9,7 @@ import (
 func init() {
 	beegae.Router("/", &controllers.ListController{})
 	beegae.Router("/about", &controllers.BlogController{}, "get:About")
-	beegae.Router("/:year:int/:month:int/:title/:entid:int",
+	beegae.Router("/:year:int/:month:int/:title/:entid",
 		&controllers.BlogController{}, "get:EntryPage")
 	beegae.Router("/:catsafe", &controllers.ListController{})
 

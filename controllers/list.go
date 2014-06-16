@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	// "strconv"
+
 	"appengine/datastore"
 
 	"models"
@@ -42,6 +44,13 @@ func (this *ListController) Get() {
 			break
 		}
 		moop[ent.Title] = ent.Content
+		// ent.Url = this.UrlFor(
+		// 	"BlogController.EntryPage", ":year", strconv.Itoa(ent.Date.Year()),
+		// 	":month", strconv.Itoa(int(ent.Date.Month())), ":title", ent.Title,
+		// 	":entid", something)
+
+		something := this.UrlFor("BlogController.EntryPage", ":year", "1111", ":month", "11", ":title", "aaaa", ":entid", "aaaa")
+		ent.Url = something
 		arr[i-1] = ent
 	}
 	this.Data["Entries"] = arr

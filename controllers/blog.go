@@ -43,3 +43,15 @@ func (this *BlogController) Prepare() {
 
 	this.Layout = "layout.html"
 }
+
+func (this *BlogController) About() {
+	this.TplNames = "about.tpl"
+}
+
+func (this *BlogController) AdminNav() {
+	this.TplNames = "admin.tpl"
+}
+
+func (this *BlogController) EntryPage() {
+	this.TplNames = "simple.tpl"
+}
