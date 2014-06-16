@@ -19,8 +19,8 @@ func init() {
 		Router("/ent", &controllers.AddController{}, "get:AddEnt;post:PostEnt").
 		Router("/cat", &controllers.AddController{}, "get:AddCat;post:PostCat"))
 	adminNamespace.Namespace(beegae.NewNamespace("/del").
-		Router("/ent", &controllers.DelController{}, "get:GetDelEnt;post:PostDelEnt").
-		Router("/cat", &controllers.DelController{}, "get:GetDelCat;post:PostDelCat"))
+		Router("/ent", &controllers.DelController{}, "get:DelEnt;post:Delete").
+		Router("/cat", &controllers.DelController{}, "get:DelCat;post:Delete"))
 	beegae.AddNamespace(adminNamespace)
 
 	beegae.Run()

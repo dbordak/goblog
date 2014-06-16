@@ -10,19 +10,6 @@ type AddController struct {
 	FormController
 }
 
-func (this *AddController) getForm() {
-	selkey, err := datastore.DecodeKey(this.GetString("sel"))
-	if err != nil {
-		this.AppEngineCtx.Errorf("getting request form: %v", err)
-		return
-	}
-	this.FReq = &formRequest{
-		Name:      this.GetString("name"),
-		Textarea:  this.GetString("ta"),
-		SelectKey: selkey,
-	}
-}
-
 func (this *AddController) putModel(modType string, model interface{}) {
 	key := datastore.NewIncompleteKey(this.AppEngineCtx, modType, this.FReq.SelectKey)
 	_, err := datastore.Put(this.AppEngineCtx, key, model)

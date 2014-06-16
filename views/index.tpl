@@ -1,6 +1,6 @@
-{{range $title, $content := .Entries}}
+{{range $ent := .Entries}}
 <article>
-  <h2><a href=>{{$title}}</a></h2>
-  <p>{{$content | html2str}}</p>
+  <h2><a href=$ent.Url()>{{$ent.Title}}</a></h2>
+  <p>{{$ent.Content | html2str}}</p>
 </article>
 {{end}}

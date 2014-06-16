@@ -44,7 +44,7 @@ func (this *ListController) Get() {
 		moop[ent.Title] = ent.Content
 		arr[i-1] = ent
 	}
-	this.Data["Entries"] = moop
+	this.Data["Entries"] = arr
 
 	if cursor, err := t.Cursor(); err == nil {
 		var ent models.Entry

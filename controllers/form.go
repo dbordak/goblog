@@ -31,3 +31,16 @@ type formRequest struct {
 	SelectKey *datastore.Key
 	Textarea  string
 }
+
+func (this *FormController) getForm() {
+	selkey, err := datastore.DecodeKey(this.GetString("sel"))
+	if err != nil {
+		this.AppEngineCtx.Errorf("getting request form: %v", err)
+		return
+	}
+	this.FReq = &formRequest{
+		Name:      this.GetString("name"),
+		Textarea:  this.GetString("ta"),
+		SelectKey: selkey,
+	}
+}
