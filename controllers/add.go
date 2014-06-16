@@ -10,22 +10,25 @@ type AddController struct {
 	FormController
 }
 
-func (this *AddController) getForm() *formRequest {
-	selkey, _ := datastore.DecodeKey(this.GetString("sel"))
-	return &formRequest{
+func (this *AddController) getForm() {
+	selkey, err := datastore.DecodeKey(this.GetString("sel"))
+	if err != nil {
+		this.AppEngineCtx.Errorf("getting request form: %v", err)
+		return
+	}
+	this.FReq = &formRequest{
 		Name:      this.GetString("name"),
 		Textarea:  this.GetString("ta"),
 		SelectKey: selkey,
 	}
 }
 
-func (this *AddController) putModel(modType string, parent *datastore.Key,
-	model interface{}) {
-
-	key := datastore.NewIncompleteKey(this.AppEngineCtx, modType, parent)
+func (this *AddController) putModel(modType string, model interface{}) {
+	key := datastore.NewIncompleteKey(this.AppEngineCtx, modType, this.FReq.SelectKey)
 	_, err := datastore.Put(this.AppEngineCtx, key, model)
 	if err != nil {
-		//TODO: Error
+		this.AppEngineCtx.Errorf("adding %s: %v", modType, err)
+		this.Data["Label"] = "Uh oh"
 		return
 	}
 }
@@ -43,9 +46,9 @@ func (this *AddController) AddCat() {
 }
 
 func (this *AddController) PostCat() {
-	fReq := this.getForm()
-	cat := &models.Category{fReq.Name}
-	this.putModel("Category", fReq.SelectKey, cat)
+	this.getForm()
+	cat := &models.Category{this.FReq.Name}
+	this.putModel("Category", cat)
 }
 
 func (this *AddController) AddEnt() {
@@ -66,7 +69,7 @@ func (this *AddController) AddEnt() {
 }
 
 func (this *AddController) PostEnt() {
-	fReq := this.getForm()
-	ent := models.NewEntry(fReq.Name, fReq.Textarea)
-	this.putModel("Entry", fReq.SelectKey, ent)
+	this.getForm()
+	ent := models.NewEntry(this.FReq.Name, this.FReq.Textarea)
+	this.putModel("Entry", ent)
 }

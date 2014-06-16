@@ -6,6 +6,7 @@ import (
 
 type FormController struct {
 	BlogController
+	FReq *formRequest
 }
 
 func (this *FormController) Prepare() {

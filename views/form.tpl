@@ -1,5 +1,8 @@
 <h1>{{.Title}}</h1>
 <p>{{.Desc}}</p>
+{{with .Label}}
+{{.}}
+{{end}}
 {{with .Form}}
 <form action="" method="post">
   <dl>

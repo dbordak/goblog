@@ -11,13 +11,13 @@ type DelController struct {
 	FormController
 }
 
-func (this *DelController) getForm(selectType string) *formRequest {
+func (this *DelController) getForm(selectType string) {
 	selkey, err := datastore.DecodeKey(this.GetString("sel"))
 	if err != nil {
-		//TODO: Error
-		return &formRequest{}
+		this.AppEngineCtx.Errorf("getting request form: %v", err)
+		return
 	}
-	return &formRequest{SelectKey: selkey}
+	this.FReq = &formRequest{SelectKey: selkey}
 }
 
 func (this *DelController) GetDelCat() {
@@ -31,8 +31,8 @@ func (this *DelController) GetDelCat() {
 }
 
 func (this *DelController) PostDelCat() {
-	fReq := this.getForm("Category")
-	datastore.Delete(this.AppEngineCtx, fReq.SelectKey)
+	this.getForm("Category")
+	datastore.Delete(this.AppEngineCtx, this.FReq.SelectKey)
 }
 
 func (this *DelController) GetDelEnt() {
@@ -59,6 +59,6 @@ func (this *DelController) GetDelEnt() {
 }
 
 func (this *DelController) PostDelEnt() {
-	fReq := this.getForm("Entry")
-	datastore.Delete(this.AppEngineCtx, fReq.SelectKey)
+	this.getForm("Entry")
+	datastore.Delete(this.AppEngineCtx, this.FReq.SelectKey)
 }

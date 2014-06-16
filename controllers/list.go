@@ -32,6 +32,7 @@ func (this *ListController) Get() {
 
 	t := que.Run(this.AppEngineCtx)
 	moop := make(map[string]string)
+	var arr = [10]models.Entry{}
 	i := 0
 	for i < 10 {
 		i++
@@ -41,6 +42,7 @@ func (this *ListController) Get() {
 			break
 		}
 		moop[ent.Title] = ent.Content
+		arr[i-1] = ent
 	}
 	this.Data["Entries"] = moop
 
