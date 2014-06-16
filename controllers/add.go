@@ -19,6 +19,17 @@ func (this *AddController) getForm() *formRequest {
 	}
 }
 
+func (this *AddController) putModel(modType string, parent *datastore.Key,
+	model interface{}) {
+
+	key := datastore.NewIncompleteKey(this.AppEngineCtx, modType, parent)
+	_, err := datastore.Put(this.AppEngineCtx, key, model)
+	if err != nil {
+		//TODO: Error
+		return
+	}
+}
+
 func (this *AddController) AddCat() {
 	this.Data["Title"] = "Add Category"
 	this.Data["Form"] = &form{
@@ -26,7 +37,7 @@ func (this *AddController) AddCat() {
 		Select: &selectList{
 			Name:   "Parent",
 			DefOpt: true,
-			Items:  this.Data["Sidebar"].(*Sidebar).Categories,
+			Items:  this.Data["Sidebar"].(*sidebar).Categories,
 		},
 	}
 }
@@ -34,13 +45,7 @@ func (this *AddController) AddCat() {
 func (this *AddController) PostCat() {
 	fReq := this.getForm()
 	cat := &models.Category{fReq.Name}
-
-	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Category", fReq.SelectKey)
-	_, err := datastore.Put(this.AppEngineCtx, key, cat)
-	if err != nil {
-		//TODO: Error
-		return
-	}
+	this.putModel("Category", fReq.SelectKey, cat)
 }
 
 func (this *AddController) AddEnt() {
@@ -51,7 +56,7 @@ func (this *AddController) AddEnt() {
 		Select: &selectList{
 			Name:   "Category",
 			DefOpt: true,
-			Items:  this.Data["Sidebar"].(*Sidebar).Categories,
+			Items:  this.Data["Sidebar"].(*sidebar).Categories,
 		},
 	}
 
@@ -63,11 +68,5 @@ func (this *AddController) AddEnt() {
 func (this *AddController) PostEnt() {
 	fReq := this.getForm()
 	ent := models.NewEntry(fReq.Name, fReq.Textarea)
-
-	key := datastore.NewIncompleteKey(this.AppEngineCtx, "Entry", fReq.SelectKey)
-	_, err := datastore.Put(this.AppEngineCtx, key, ent)
-	if err != nil {
-		//TODO: Error
-		return
-	}
+	this.putModel("Entry", fReq.SelectKey, ent)
 }

@@ -14,7 +14,7 @@
         {{if .DefOpt}}
         <option value="">---</option>
         {{end}}
-        {{range $id, $name := .Items}}
+        {{range $name, $id := .Items}}
         <option value={{$id}}>{{$name}}</option>
         {{end}}
       </select>

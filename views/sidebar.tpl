@@ -5,7 +5,7 @@
   <label for="sidebar_category">Category: </label><br/>
   <select name="sidebar_category" onchange="toCategoryPage()" id="side_dd">
     <option value="">---</option>
-    {{range $id, $name := .Categories}}
+    {{range $name, $id := .Categories}}
     <option value={{$id}}>{{$name}}</option>
     {{end}}
   </select>

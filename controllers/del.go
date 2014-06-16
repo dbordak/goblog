@@ -4,6 +4,7 @@ import (
 	"appengine/datastore"
 
 	"models"
+	"util"
 )
 
 type DelController struct {
@@ -20,11 +21,11 @@ func (this *DelController) getForm(selectType string) *formRequest {
 }
 
 func (this *DelController) GetDelCat() {
-	this.Data["Title"] = "Remove Category"
+	this.Data["Title"] = "Delete Category"
 	this.Data["Form"] = &form{
 		Select: &selectList{
 			Name:  "Category",
-			Items: this.Data["Sidebar"].(*Sidebar).Categories,
+			Items: this.Data["Sidebar"].(*sidebar).Categories,
 		},
 	}
 }
@@ -35,27 +36,24 @@ func (this *DelController) PostDelCat() {
 }
 
 func (this *DelController) GetDelEnt() {
-	q := datastore.NewQuery("Entry").Project("c", "d").Order("d")
+	q := datastore.NewQuery("Entry")
 	t := q.Run(this.AppEngineCtx)
-	m := make(map[string]string)
+	moop := make(map[string]string)
 	for {
 		var ent models.Entry
 		key, err := t.Next(&ent)
-		if err == datastore.Done {
+		this.AppEngineCtx.Errorf("%v", err)
+		if util.QueryErrHandler(err, this.AppEngineCtx, "Entry") {
 			break
 		}
-		if err != nil {
-			this.AppEngineCtx.Errorf("fetching next Entry: %v", err)
-			break
-		}
-		m[key.Encode()] = ent.Title
+		moop[ent.Title] = key.Encode()
 	}
 
-	this.Data["Title"] = "Remove Entry"
+	this.Data["Title"] = "Delete Entry"
 	this.Data["Form"] = &form{
 		Select: &selectList{
 			Name:  "Entry",
-			Items: m,
+			Items: moop,
 		},
 	}
 }
