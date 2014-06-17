@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	// "strconv"
+	"fmt"
 
 	"appengine/datastore"
 
@@ -33,24 +33,22 @@ func (this *ListController) Get() {
 	}
 
 	t := que.Run(this.AppEngineCtx)
-	moop := make(map[string]string)
 	var arr = [10]models.Entry{}
 	i := 0
 	for i < 10 {
 		i++
 		var ent models.Entry
-		_, err := t.Next(&ent)
+		key, err := t.Next(&ent)
 		if util.QueryErrHandler(err, this.AppEngineCtx, "Entry") {
 			break
 		}
-		moop[ent.Title] = ent.Content
 		// ent.Url = this.UrlFor(
 		// 	"BlogController.EntryPage", ":year", strconv.Itoa(ent.Date.Year()),
 		// 	":month", strconv.Itoa(int(ent.Date.Month())), ":title", ent.Title,
 		// 	":entid", something)
 
-		something := this.UrlFor("BlogController.EntryPage", ":year", "1111", ":month", "11", ":title", "aaaa", ":entid", "aaaa")
-		ent.Url = something
+		ent.Url = fmt.Sprintf("/%d/%d/%s/%s", ent.Date.Year(),
+			int(ent.Date.Month()), ent.Title, key.Encode())
 		arr[i-1] = ent
 	}
 	this.Data["Entries"] = arr

@@ -34,7 +34,7 @@ type formRequest struct {
 
 func (this *FormController) getForm() {
 	selkey, err := datastore.DecodeKey(this.GetString("sel"))
-	if err != nil {
+	if err != nil && this.GetString("sel") != "" {
 		this.AppEngineCtx.Errorf("getting request form: %v", err)
 		return
 	}

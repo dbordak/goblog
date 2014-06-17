@@ -1,6 +1,9 @@
 package controllers
 
 import (
+	"html/template"
+	"strconv"
+
 	"appengine/datastore"
 	"github.com/astaxie/beegae"
 
@@ -54,4 +57,23 @@ func (this *BlogController) AdminNav() {
 
 func (this *BlogController) EntryPage() {
 	this.TplNames = "simple.tpl"
+	year, err := strconv.Atoi(this.Ctx.Input.Param(":year"))
+	if err != nil {
+		return
+	}
+	month, err := strconv.Atoi(this.Ctx.Input.Param(":month"))
+	if err != nil {
+		return
+	}
+	title := this.Ctx.Input.Param(":title")
+	entkey, err := datastore.DecodeKey(this.Ctx.Input.Param(":entsafe"))
+	if err != nil {
+		return
+	}
+	var ent models.Entry
+	datastore.Get(this.AppEngineCtx, entkey, &ent)
+	if ent.Date.Year() == year && int(ent.Date.Month()) == month && title == ent.Title {
+		this.Data["Title"] = ent.Title
+		this.Data["Content"] = template.HTML(ent.Content)
+	}
 }
