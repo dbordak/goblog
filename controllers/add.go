@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"html/template"
+
 	"appengine/datastore"
 
 	"models"
@@ -29,6 +31,7 @@ func (this *AddController) AddCat() {
 			DefOpt: true,
 			Items:  this.Data["Sidebar"].(*sidebar).Categories,
 		},
+		Xsrfdata: template.HTML(this.XsrfFormHtml()),
 	}
 }
 
@@ -48,6 +51,7 @@ func (this *AddController) AddEnt() {
 			DefOpt: true,
 			Items:  this.Data["Sidebar"].(*sidebar).Categories,
 		},
+		Xsrfdata: template.HTML(this.XsrfFormHtml()),
 	}
 
 	//This sets the page to use TinyMCE for Textareas

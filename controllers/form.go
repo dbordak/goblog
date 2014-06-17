@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"html/template"
+
 	"appengine/datastore"
 )
 
@@ -21,6 +23,7 @@ type selectList struct {
 }
 
 type form struct {
+	Xsrfdata template.HTML
 	Name     string
 	Select   *selectList
 	Textarea string

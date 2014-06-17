@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"html/template"
+
 	"appengine/datastore"
 
 	"models"
@@ -18,6 +20,7 @@ func (this *DelController) DelCat() {
 			Name:  "Category",
 			Items: this.Data["Sidebar"].(*sidebar).Categories,
 		},
+		Xsrfdata: template.HTML(this.XsrfFormHtml()),
 	}
 }
 
@@ -41,6 +44,7 @@ func (this *DelController) DelEnt() {
 			Name:  "Entry",
 			Items: moop,
 		},
+		Xsrfdata: template.HTML(this.XsrfFormHtml()),
 	}
 }
 

@@ -7,6 +7,8 @@ import (
 )
 
 func init() {
+	beegae.EnableXSRF = true
+
 	beegae.Router("/", &controllers.ListController{})
 	beegae.Router("/about", &controllers.BlogController{}, "get:About")
 	beegae.Router("/:year:int/:month:int/:title/:entsafe",

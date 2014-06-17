@@ -5,6 +5,7 @@
 {{end}}
 {{with .Form}}
 <form action="" method="post">
+  {{.Xsrfdata}}
   <dl>
     {{with .Name}}
     <dt><label for="f_title">{{.}}</label></dt>
