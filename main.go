@@ -15,14 +15,14 @@ func init() {
 		&controllers.BlogController{}, "get:EntryPage")
 	beegae.Router("/:catsafe", &controllers.ListController{})
 
-	adminNamespace := beegae.NewNamespace("/admin").
-		Router("/", &controllers.BlogController{}, "get:AdminNav")
-	adminNamespace.Namespace(beegae.NewNamespace("/add").
-		Router("/ent", &controllers.AddController{}, "get:AddEnt;post:PostEnt").
-		Router("/cat", &controllers.AddController{}, "get:AddCat;post:PostCat"))
-	adminNamespace.Namespace(beegae.NewNamespace("/del").
-		Router("/ent", &controllers.DelController{}, "get:DelEnt;post:Delete").
-		Router("/cat", &controllers.DelController{}, "get:DelCat;post:Delete"))
+	adminNamespace := beegae.NewNamespace("/admin",
+		beegae.NSRouter("/", &controllers.BlogController{}, "get:AdminNav"),
+		beegae.NSNamespace("/add",
+			beegae.NSRouter("/ent", &controllers.AddController{}, "get:AddEnt;post:PostEnt"),
+			beegae.NSRouter("/cat", &controllers.AddController{}, "get:AddCat;post:PostCat")),
+		beegae.NSNamespace("/del".
+			beegae.NSRouter("/ent", &controllers.DelController{}, "get:DelEnt;post:Delete"),
+			beegae.NSRouter("/cat", &controllers.DelController{}, "get:DelCat;post:Delete")))
 	beegae.AddNamespace(adminNamespace)
 
 	beegae.Run()
